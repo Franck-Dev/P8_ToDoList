@@ -72,7 +72,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/tasks/{id}/toggle', name: 'app_task_toggle', methods: ['POST'])]
+    #[Route('/{id}/toggle', name: 'app_task_toggle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager)
     {
         $task->toggle(!$task->isDone());
@@ -80,7 +80,7 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list');
+        return $this->redirectToRoute('app_task_index');
     }
 
     #[Route('/{id}', name: 'app_task_delete', methods: ['POST'])]
