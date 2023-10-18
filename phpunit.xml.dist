@@ -17,6 +17,12 @@
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
     </php>
 
+         <report>
+             <clover outputFile="clover.xml"/>
+             <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
+             <xml outputDirectory="xml-coverage"/>
+         </report>
+
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
