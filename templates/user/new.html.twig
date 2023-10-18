@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block header_title %}<h1>Créer un utilisateur</h1>{% endblock %}
+{% block header_img %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ include('user/_form.html.twig') }}
+    </div>
+    <a href="{{ path('app_user_index') }}" class="btn btn-primary pull-right">Retour</a>
+{% endblock %}
+
+{# {% block body %}
+    <h1>Create new User</h1>
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('app_user_index') }}">back to list</a>
+{% endblock %}  #}

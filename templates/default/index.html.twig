@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block header_title %}
+    <h1>Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !</h1>
+{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="row">
+        <a href="{{ path('app_task_new') }}" class="btn btn-success">Créer une nouvelle tâche</a>
+        <a href="{{ path('app_task_index') }}" class="btn btn-info">Consulter la liste des tâches à faire</a>
+        <a href="" class="btn btn-secondary">Consulter la liste des tâches terminées</a>
+    </div>
+{% endblock %}
