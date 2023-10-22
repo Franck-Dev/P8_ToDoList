@@ -15,15 +15,26 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]    
+    /**
+     * index
+     *
+     * @param  mixed $userRepository
+     * @return Response
+     */
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+        return $this->render('user/index.html.twig', ['users' => $userRepository->findAll(),]);
     }
 
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]    
+    /**
+     * new
+     *
+     * @param  mixed $request
+     * @param  mixed $entityManager
+     * @return void
+     */
     public function new(Request $request, EntityManagerInterface $entityManager,
      UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -31,38 +42,47 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() === TRUE && $form->isValid() === TRUE) {
 
             $plaintextPassword = $user->getPassword();
-
+            
             // hash the password (based on the security.yaml config for the $user class)
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $plaintextPassword
             );
             $user->setPassword($hashedPassword);
-
+            
             $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return $this->renderForm('user/new.html.twig', ['user' => $user,'form' => $form,]);
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]    
+    /**
+     * show
+     *
+     * @param  mixed $user
+     * @return Response
+     */
     public function show(User $user): Response
     {
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
+        return $this->render('user/show.html.twig', ['user' => $user,]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]    
+    /**
+     * edit
+     *
+     * @param  mixed $request
+     * @param  mixed $user
+     * @param  mixed $entityManager
+     * @return Response
+     */
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
@@ -74,13 +94,18 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return $this->renderForm('user/edit.html.twig', ['user' => $user,'form' => $form,]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]    
+    /**
+     * delete
+     *
+     * @param  mixed $request
+     * @param  mixed $user
+     * @param  mixed $entityManager
+     * @return Response
+     */
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {

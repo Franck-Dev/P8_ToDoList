@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,6 +53,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection
      */
     private Collection $tasks;
+
+    #[ORM\Column(type: Types::JSON)]
+    /**
+     * @var array
+     */
+    private array $roles = [];
 
     public function __construct()
     {
@@ -152,9 +159,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return void
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return array('ROLE_USER');
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        //$roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     /**
@@ -218,4 +229,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
+    /**
+     * setRoles
+     *
+     * @param  mixed $Roles
+     * @return static
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
 }
